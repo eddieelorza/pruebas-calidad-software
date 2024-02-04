@@ -49,10 +49,13 @@ def convert_numbers_in_file(file_path: str, output_file, error_list) -> None:
                     result_line = f"Original: {num}\tBinary: {binary}\tHexadecimal: {hexadecimal}\n"
                     print(result_line)
                     output_file.write(result_line)
-
                 except ValueError as ve:
-                    error_list.append(f"Invalid data in {file_path}. Skipping line: {line.strip()}. Error: {ve}")
-
+                    error_message = (
+                        f"Invalid data in {file_path}. "
+                        f"Skipping line: {line.strip()}. "
+                        f"Error: {ve}"
+                    )
+                    error_list.append(error_message)
     except FileNotFoundError as e:
         print(f"File not found: {file_path} ({e})")
     except IOError as e:

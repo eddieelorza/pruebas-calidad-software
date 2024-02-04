@@ -128,3 +128,4 @@ if __name__ == "__main__":
             print(f"Results written to {OUTPUT_FILE_NAME}")
             total_time = total_end_time - total_start_time
             print('Total time: ', total_time)
+            
