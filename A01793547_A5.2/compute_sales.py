@@ -1,40 +1,39 @@
-import json
-import time
-
 """
 Sales Computation Script
 
-This script is designed to compute total sales amounts
+This script computes total sales amounts
 based on product catalog and sales data stored in JSON files.
 It calculates the total sales amount and writes the results to a text file.
 
 Usage:
-Run the script with Python 3: python3 computeSales.py TC
+Run the script with Python 3: python3 compute_sales.py TC
 
 Dependencies:
 - Python 3
 - Required Python modules: json, time, sys
 
 Input:
-- priceCatalogue.json (str): Path to the JSON file
-containing product catalog information.
-- salesRecord.json (str): Path to the JSON file containing sales information.
+- price_catalogue.json (str): Path to the JSON
+file containing product catalog information.
+- sales_record.json (str): Path to the JSON file containing sales information.
 
 Output:
 - Prints total sales amount and elapsed time.
 - Writes total sales and elapsed time information
-to the "salesResult.txt" file.
+to the "sales_result.txt" file.
 
 Example:
-python3 computeSales.py TC
+python3 compute_sales.py TC
 
 Student: Eddie Guadalupe Elorza Ruiz
 Student ID: A01794404
 Date: February 11, 2024
 """
 
+import json
+import time
 
-# Function to load JSON data from a file
+
 def load_json(filename):
     """
     Read data from a JSON file.
@@ -44,8 +43,8 @@ def load_json(filename):
         list: The data read from the JSON file.
     """
     try:
-        with open(filename, 'r') as file:
-            data = json.load(file)
+        with open(filename, 'r', encoding="utf-8") as json_file:
+            data = json.load(json_file)
         return data
     except FileNotFoundError:
         print(f"Error: File '{filename}' not found.")
@@ -55,7 +54,6 @@ def load_json(filename):
         return None
 
 
-# Function to compute the total cost of sales
 def compute_total_cost(price_catalogue, sales_record):
     """
     Compute the total cost of sales.
@@ -81,7 +79,6 @@ def compute_total_cost(price_catalogue, sales_record):
     return total_cost
 
 
-# Function to print and save the results
 def print_and_save_results(total_cost, elapsed_time, result_index):
     """
     Print and save the results.
@@ -90,30 +87,31 @@ def print_and_save_results(total_cost, elapsed_time, result_index):
         elapsed_time (float): The elapsed time.
         result_index (int): The index of the result.
     """
-    print(f"TOTAL TC{result_index}: {total_cost:.2f},"
+    print(f"TOTAL TC{result_index}: {total_cost:.2f}, "
           f"Time: {elapsed_time:.4f} seconds")
-    with open("salesResult.txt", "a") as file:
-        file.write(f"TC{result_index} Total Cost: {total_cost:.2f},"
-                   f" Time: {elapsed_time:.4f} seconds\n")
+    with open("sales_result.txt", "a", encoding="utf-8") as result_file:
+        result_file.write(f"TC{result_index} Total Cost: {total_cost:.2f},"
+                          f"Time: {elapsed_time:.4f} seconds\n")
 
 
 if __name__ == "__main__":
-    with open("salesResult.txt", "w") as file:
-        file.write("")  # Clearing the contents of the file
+    with open("sales_result.txt", "w", encoding="utf-8") as initial_file:
+        pass  # Clear the contents of the file
 
     for i in range(1, 4):
         start_time = time.time()
 
-        price_catalogue_file = f"TC{i}/priceCatalogue.json"
-        sales_record_file = f"TC{i}/salesRecord.json"
+        price_catalogue_file = f"TC{i}/price_catalogue.json"
+        sales_record_file = f"TC{i}/sales_record.json"
 
-        price_catalogue = load_json(price_catalogue_file)
-        sales_record = load_json(sales_record_file)
+        price_catalogue_data = load_json(price_catalogue_file)
+        sales_record_data = load_json(sales_record_file)
 
-        if price_catalogue is None or sales_record is None:
+        if price_catalogue_data is None or sales_record_data is None:
             continue
 
-        total_cost = compute_total_cost(price_catalogue, sales_record)
-        elapsed_time = time.time() - start_time
+        total_cost_internal = compute_total_cost(price_catalogue_data,
+                                                 sales_record_data)
+        elapsed_time_internal = time.time() - start_time
 
-        print_and_save_results(total_cost, elapsed_time, i)
+        print_and_save_results(total_cost_internal, elapsed_time_internal, i)
